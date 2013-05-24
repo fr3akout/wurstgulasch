@@ -202,9 +202,11 @@ def create_app(conf_file_location='wurstgulasch.cfg'):
 def shell_init(conf_file_location='wurstgulasch.cfg'):
     Configuration().load_from_file(conf_file_location)
     import model
+    wurstgulasch = Wurstgulasch(database_uri=Configuration().database_uri)
     return {
-        'wurstgulasch': Wurstgulasch(database_uri=Configuration().database_uri),
-        'model': model
+        'wurstgulasch': wurstgulasch,
+        'model': model,
+        'session': wurstgulasch.session_factory()
     }
 
 if __name__ == "__main__":
