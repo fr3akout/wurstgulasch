@@ -85,3 +85,27 @@ def tag_validator(form, field):
     for tag in tag_str:
         if re.match('^[a-zA-Z]*$', tag) is None:
             raise ValidationError("Only one word per tag is allowed :|")
+
+from sqlalchemy.sql import expression
+from sqlalchemy.ext.compiler import compiles
+from sqlalchemy.types import Numeric
+
+class greatest(expression.FunctionElement):
+    type = Numeric()
+    name = 'greatest'
+
+@compiles(greatest)
+def default_greatest(element, compiler, **kw):
+    return compiler.visit_function(element)
+
+@compiles(greatest, 'sqlite')
+@compiles(greatest, 'mssql')
+@compiles(greatest, 'oracle')
+def case_greatest(element, compiler, **kw):
+    arg1, arg2 = list(element.clauses)
+    return "CASE WHEN %s > %s THEN %s ELSE %s END" % (
+        compiler.process(arg1),
+        compiler.process(arg2),
+        compiler.process(arg1),
+        compiler.process(arg2),
+    )

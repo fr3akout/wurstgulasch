@@ -8,7 +8,9 @@ from StringIO import StringIO
 from werkzeug.wrappers import Response
 from werkzeug.utils import redirect
 
-from sqlalchemy import desc, or_
+from sqlalchemy import desc, asc, or_
+from sqlalchemy.sql.expression import null
+from sqlalchemy.orm import aliased
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
 
@@ -250,20 +252,21 @@ def web_view_stream(request, environment, session, username, page=1,
     # one more time... with subqueries
 
     # friends' posts
-    friends_posts = session.query(model.post).filter(model.post.owner_id.\
-            in_(friend_ids))
+    friends_posts = session.query(model.post, model.post.timestamp).\
+            filter(model.post.owner_id.in_(friend_ids))
      
     # friends' reposts
-    friends_reposts = session.query(model.post).join(model.post_reposters).\
-            filter(model.post_reposters.c.identity_id.in_(friend_ids))
+    friends_reposts = session.query(model.post,model.post_reposters.c.\
+            repost_date).filter(model.post_reposters.c.identity_id.\
+            in_(friend_ids))
 
-    posts = friends_posts.union(friends_reposts).order_by(desc(post.timestamp)).\
-            offset((page-1)*posts_per_page).limit(posts_per_page).all()
-
+    posts = friends_posts.union(friends_reposts).order_by(asc(util.greatest(post.timestamp,
+        model.post_reposters.c.repost_date))).offset((page-1)*posts_per_page).\
+        limit(posts_per_page).all()
 
     total_num = friends_posts.union(friends_reposts).count()
 
-    posts = [p.downcast() for p in posts]
+    posts = [p[0].downcast() for p in posts]
 
     return render_template("web_view_stream.htmljinja", environment,
                            posts=posts, user=u, page_num=page, total_num=total_num,
