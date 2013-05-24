@@ -250,25 +250,18 @@ def web_view_stream(request, environment, session, username, page=1,
     # one more time... with subqueries
 
     # friends' posts
-    friendposts = session.query(model.post.id).\
-        filter(model.post.owner_id.in_(friend_ids)).subquery()
-
+    friends_posts = session.query(model.post).filter(model.post.owner_id.\
+            in_(friend_ids))
+     
     # friends' reposts
-    friendreposts = session.query(model.post.id).join(model.post_reposters).\
-        filter(model.post_reposters.c.identity_id.in_(friend_ids)).subquery()
+    friends_reposts = session.query(model.post).join(model.post_reposters).\
+            filter(model.post_reposters.c.identity_id.in_(friend_ids))
 
-    # now put it together
+    posts = friends_posts.union(friends_reposts).order_by(desc(post.timestamp)).\
+            offset((page-1)*posts_per_page).limit(posts_per_page).all()
 
-    posts = session.query(model.post).\
-        filter(or_(model.post.id.in_(friendposts),
-                   model.post.id.in_(friendreposts))).\
-        order_by(desc(post.timestamp)).\
-        offset((page-1)*posts_per_page).limit(posts_per_page).all()
 
-    total_num = session.query(model.post).\
-        filter(or_(model.post.id.in_(friendposts),
-                   model.post.id.in_(friendreposts))).\
-        count()
+    total_num = friends_posts.union(friends_reposts).count()
 
     posts = [p.downcast() for p in posts]
 
