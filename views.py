@@ -10,6 +10,7 @@ from werkzeug.utils import redirect
 
 from sqlalchemy import desc, asc, or_
 from sqlalchemy.sql.expression import null
+from sqlalchemy.sql import select
 from sqlalchemy.orm import aliased
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm.exc import NoResultFound
@@ -249,24 +250,20 @@ def web_view_stream(request, environment, session, username, page=1,
     u = get_user_obj(username, session)
     friend_ids = [f.id for f in u.friends]
 
-    # one more time... with subqueries
 
-    # friends' posts
-    friends_posts = session.query(model.post, model.post.timestamp).\
-            filter(model.post.owner_id.in_(friend_ids))
-     
-    # friends' reposts
-    friends_reposts = session.query(model.post,model.post_reposters.c.\
-            repost_date).filter(model.post_reposters.c.identity_id.\
-            in_(friend_ids))
+    # TODO improve performance
+    posts_stmt = select([model.post.__table__.c.id, model.post.__table__.c.timestamp.label('date')]).where(model.post.__table__.c.owner_id.in_(friend_ids))
 
-    posts = friends_posts.union(friends_reposts).order_by(asc(util.greatest(post.timestamp,
-        model.post_reposters.c.repost_date))).offset((page-1)*posts_per_page).\
-        limit(posts_per_page).all()
+    reposts_stmt = select([model.post.__table__.c.id, model.post_reposters.c.repost_date.label('date')]).select_from(model.post.__table__.join(model.post_reposters)).where(model.post_reposters.c.identity_id.in_(friend_ids))
 
-    total_num = friends_posts.union(friends_reposts).count()
+    post_ids_stmt = select(['id']).select_from(posts_stmt.union(reposts_stmt)).order_by(desc('date')).offset((page-1)*posts_per_page).limit(posts_per_page)
+    post_ids = [p[0] for p in session.execute(post_ids_stmt).fetchall()]
 
-    posts = [p[0].downcast() for p in posts]
+    total_num = len(session.execute(posts_stmt.union(reposts_stmt)).fetchall())
+
+    posts = [session.query(post).filter(post.id == p).one() for p in post_ids]
+
+    posts = [p.downcast() for p in posts]
 
     return render_template("web_view_stream.htmljinja", environment,
                            posts=posts, user=u, page_num=page, total_num=total_num,
@@ -368,7 +365,7 @@ def web_insert_post(request, environment, session, username, plugin_str=None):
             else:
                 return render_template("web_insert_post.htmljinja",
                                        environment, form=form)
-  
+
         else:
             # this should not happen
             pass
@@ -521,7 +518,7 @@ def web_change_profile(request, environment, session, username):
 
     if request.method == 'POST':
         form = changeProfileForm(request.form)
- 
+
         u.identity.tagline = escape_html(form.tagline.data)
         u.identity.bio = escape_html(form.bio.data)
 
