@@ -5,7 +5,7 @@ Wurstgulasch JSON API Specs
 --------------
 
 Authenticated: A call to an API endpoint marked as "authenticated" has to
-contain the HTTP header "access\_token", which can be obtained by the endpoint
+contain the HTTP header ``access_token``, which can be obtained by the endpoint
 ``/api/0/login``.
 
 1. Basic User Interaction
@@ -19,26 +19,23 @@ contain the HTTP header "access\_token", which can be obtained by the endpoint
 Authentifies a User against a Wurstgulasch Instance
 
 Data:
-    * username
-    * password
+* username
+* password
 
 Result:
-    * success
-    * access\_token
-    * valid\_until
+* success
+* access\_token
+* valid\_until
 
 1.2 Logout (authenticated)
 --------------------------
 
     /api/0/logout
 
-Terminates a session and invalidates the access\_token passed in the header.
-
-Data:
-    (None)
+Terminates a session and invalidates the ``access_token`` passed in the header.
 
 Result:
-    * success (boolean)
+* success (boolean)
 
 
 2. Instance Information
@@ -66,15 +63,15 @@ Gets List of content Plugins the Instance supports.
 
     /api/0/posts/identity/timeline
 
-Gets up to <count> posts from an identity timeline before/after a specified
+Gets up to ``count`` posts from an identity timeline before/after a specified
 timestamp
 
 Data:
-    * identity: Name of the identity that is queried
-    * (befor|after)?: Unix Timestamp
+* identity: Name of the identity that is queried
+* (befor|after)?: Unix Timestamp
 
 Result:
-    * Array of post objects
+* Array of post objects
 
 
 3.2 Get Identity Posts
@@ -82,15 +79,15 @@ Result:
 
     /api/0/posts/identity/posts
 
-Gets up to <count> posts from an identity  before/after a specified
+Gets up to ``count`` posts from an identity  before/after a specified
 timestamp
 
 Data:
-    * identity: Name of the identity that is queried
-    * (befor|after)?: Unix Timestamp
+* identity: Name of the identity that is queried
+* (befor|after)?: Unix Timestamp
 
 Result:
-    * Array of post objects
+* Array of post objects
 
 
 3.3 Get most recent public posts
@@ -98,15 +95,15 @@ Result:
 
     /api/0/posts/all
 
-Gets up to <count> posts from an identity  before/after a specified
+Gets up to ``count`` posts from an identity  before/after a specified
 timestamp
 
 Data:
-    * identity: Name of the identity that is queried
-    * (befor|after)?: Unix Timestamp
+* identity: Name of the identity that is queried
+* (befor|after)?: Unix Timestamp
 
 Result:
-    * Array of post objects
+* Array of post objects
 
 
 3.4 Get Complete Discussion
@@ -114,12 +111,8 @@ Result:
 
     /api/0/posts/discussion/<post_id>
 
-Gets Discussion about <post_id>. This includes reactions and reposts as well 
+Gets Discussion about ``post_id``. This includes reactions and reposts as well 
 as reactions to reposts.
 
-Data:
-    (none)
-
 Result:
-    * Full tree of discussion about ``post_id``. root element is the
-      referenced post.
+* Full tree of discussion about ``post_id``, which is also the root element.
