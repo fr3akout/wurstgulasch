@@ -26,6 +26,7 @@ Result:
 * success
 * access\_token
 * valid\_until
+* available\_identities
 
 1.2 Logout (authenticated)
 --------------------------
@@ -116,3 +117,20 @@ as reactions to reposts.
 
 Result:
 * Full tree of discussion about ``post_id``, which is also the root element.
+
+3.5 Create Post (authenticated)
+-------------------------------
+
+    /api/0/posts/create
+
+Method: POST
+Data:
+* identity: ``identity_id`` of the identity that should create the post
+* content\_tupe: string identifying the type of content
+* content: actual content, encoded as JSON.
+
+Result:
+* success
+* error\_message?: if the post was not created successfully, this tells you
+  why. 
+
