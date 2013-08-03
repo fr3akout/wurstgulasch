@@ -54,7 +54,54 @@ Gets Information about the queried instance
 
     /api/0/instance/supported_content_plugins
 
-Gets List of content Plugins the Instance supports.
+Gets List of content plugins the Instance supports.
+
+This might look something like:
+
+```
+[
+    {
+        'name':             'text',
+        'version':          '0.1',
+        'author':           'Max Mustermann'
+        'input_fields':
+            [
+                {
+                    'name': 'title',
+                    'desc': 'Post Title',
+                    'type': 'textfield'
+                },
+                {
+                    'name': 'text',
+                    'desc': 'Post Content',
+                    'type': 'textarea'
+                }
+            ]
+    },
+    {
+        'name':             'image',
+        'version':          '0.1',
+        'author':           'Max Mustermann'
+        'input_fields':
+            [
+                {
+                    'name': 'image',
+                    'desc': 'Post Title',
+                    'type': 'file'
+                },
+                {
+                    'name': 'description',
+                    'desc': 'Post Content',
+                    'type': 'textarea'
+                }
+            ]
+    }
+
+]
+
+```
+If you are going to work with the Plugin API, please read the plugin API
+specification.
 
 3. Posts
 --------
