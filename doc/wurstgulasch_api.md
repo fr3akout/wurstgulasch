@@ -69,6 +69,9 @@ Returns:
       0 if valid forever.
     * `available_identities`: List of identities the user has access to
 
+Possible Errors:
+* `INVALID_LOGIN`
+
 
 1.2 Logout (authenticated)
 --------------------------
@@ -98,6 +101,10 @@ Data:
 Returns:
 * Result object
 
+Possible Errors:
+* `REGISTRATION_CLOSED`
+* `USERNAME_TAKEN`
+
 1.4 Create new identity (authenticated)
 ---------------------------------------
 
@@ -115,6 +122,9 @@ Data:
 
 Returns:
 * Result object
+
+Possible Errors:
+* `IDENTITY_TAKEN`
 
 
 2. Instance Information
@@ -254,6 +264,10 @@ Returns:
 * Array of post objects or
 * Error object
 
+Possible Errors:
+* `IDENTITY_NOT_FOUND`
+* `NOT_ALLOWED`
+
 3.2 Get Identity Posts
 ----------------------
 
@@ -271,6 +285,9 @@ Data:
 Returns:
 * Array of post objects or
 * Error object
+
+Possible Errors:
+* `IDENTITY_NOT_FOUND`
 
 3.3 Get most recent public posts
 --------------------------------
@@ -304,6 +321,9 @@ Returns:
 * Full tree of discussion about ``post_id``, which is also the root element or
 * Error object
 
+Possible Errors:
+* `POST_NOT_FOUND`
+
 3.5 Create Post (authenticated)
 -------------------------------
 
@@ -318,3 +338,8 @@ Data:
 
 Returns:
 * Result object
+
+Possible Errors:
+* `IDENTITY_NOT_ALLOWED`
+* `CONTENT_TYPE_MISSING`
+* `CONTENT_ERROR`
