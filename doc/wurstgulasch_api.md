@@ -22,7 +22,7 @@ error that has occurred.
 
 ```
 {
-    'code':     'SHIT_HAPPENS',
+    'errorcode':'SHIT_HAPPENS',
     'message':  'Something, somewhere went terribly wrong'
 }
 ```
@@ -41,7 +41,7 @@ For Example:
     'errors':
         [
             {
-                'code':     'WELL_SHIT',
+                'errorcode':'WELL_SHIT',
                 'message':  'My hovercraft is full of eels.'
             }
         ]
