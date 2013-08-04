@@ -11,6 +11,9 @@ A call to an API endpoint marked as "authenticated" has to
 contain the HTTP header ``access_token``, which can be obtained by the endpoint
 ``/api/0/user/login``.
 
+Authenticated API cals can also return an Error object with the `code`
+`INVALID_ACCESS_TOKEN`
+
 0.2 Errors
 ----------
 
