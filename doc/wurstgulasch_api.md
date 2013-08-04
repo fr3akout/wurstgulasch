@@ -346,3 +346,20 @@ Possible Errors:
 * `IDENTITY_NOT_ALLOWED`
 * `CONTENT_TYPE_MISSING`
 * `CONTENT_ERROR`
+
+3.5 Repost (authenticated)
+--------------------------
+
+    /api/posts/repost
+
+Data:
+* `identity`: `identity_id` of the identity that should repost
+* `post_id`: `id` of the post to repost
+
+Returns:
+* Result Object
+
+Possible Errors:
+* `IDENTITY_NOT_FOUND`
+* `IDENTITY_NOT_ALLOWED`
+* `POST_NOT_FOUND`
