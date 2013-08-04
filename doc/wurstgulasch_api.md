@@ -108,28 +108,6 @@ Possible Errors:
 * `REGISTRATION_CLOSED`
 * `USERNAME_TAKEN`
 
-1.4 Create new identity (authenticated)
----------------------------------------
-
-    /api/0/identity/create
-
-Method: POST
-
-Create a new Identity.
-
-Data:
-* `name`: name of the identity
-* `tagline`: tagline of the identity
-* `bio`: bio for the new identity
-* `avatar`: File for 
-
-Returns:
-* Result object
-
-Possible Errors:
-* `IDENTITY_TAKEN`
-
-
 2. Instance Information
 -----------------------
 
@@ -146,6 +124,7 @@ Gets Information about the queried instance. Responses look like:
 ```
 {
     'name':     'Wurstgulasch Instance',
+    'instance': 'wurstgulasch.sft.mx',
     'admin':    'johannes@weltraumpflege.org',
 
     'software': 'Wurstgulasch',
@@ -363,3 +342,203 @@ Possible Errors:
 * `IDENTITY_NOT_FOUND`
 * `IDENTITY_NOT_ALLOWED`
 * `POST_NOT_FOUND`
+
+
+4. Identities
+-------------
+
+Identities are roles assigned to one or more users. Users can choose
+to have multiple Identities, and one identity can be managed by one or more
+users. The Owner of an identity is not disclosed.
+
+An Identity Object looks like this:
+
+```
+{
+    'handle':       'toplel@wurstgulasch.sft.mx'
+    'displayname':  'Top Lel'
+    'tagline':      'Only catcontent.'
+    'bio':          'I am only a test user.'
+    'avatar_url':   'https://wurstgulasch.sft.mx/assets/13371337133742.png'
+}
+
+```
+
+where:
+* `handle` is the identity's globally unique handle. It consists of a username
+  that is unique per instance and the instance's domain name separated by an 
+  `@`. The username is limited to 128 characters.
+* `displayname`, `taglines` and `bio` are free-text fields.
+* the `avatar_url` points to the identitie's avatar.
+
+4.1 Create new identity (authenticated)
+---------------------------------------
+
+    /api/0/identity/create
+
+Method: POST
+
+Create a new Identity.
+
+Data:
+* `name`: name of the identity
+* `tagline`: tagline of the identity
+* `bio`: bio for the new identity
+* `avatar`: File for 
+
+Returns:
+* Result object
+
+Possible Errors:
+* `IDENTITY_TAKEN`
+
+4.2 Grant access to an Identity (authenticated)
+-----------------------------------------------
+
+    /api/0/identity/share
+
+Method: POST
+
+Data:
+* `shared_identity`: the identity to which access is being granted
+* `managing_identity`: the identititie whose owner should be granted access
+
+Returns:
+* a `Result` Object
+
+Possible Errors:
+* `MANAGING_IDENTITY_NOT_FOUND`
+* `SHARED_IDENTITY_NOT_FOUND`
+* `NOT_ALLOWED`
+
+4.3 List managing Identities (authenticated)
+--------------------------------------------
+
+    /api/0/identity/list_managing
+
+Method: GET
+
+Data:
+* `identity`: Identity whose managing Identities should be listed
+
+Returns:
+* A list of `Identity` Objects
+
+Possible Errors:
+* `SHARED_IDENTITY_NOT_FOUND`
+* `MANAGING_IDENTITY_NOT_FOUND`
+* `NOT_ALLOWED`
+
+4.4 Revoke access to an Identity (authenticated)
+------------------------------------------------
+
+    /api/0/identity/revoke
+
+Method: POST
+
+Data:
+* `shared_identity`: the identity to which access should be revoked
+* `managing_identity`: the identity whose owner's access should be revoked.
+
+Possible Errors:
+* `SHARED_IDENTITY_NOT_FOUND`
+* `MANAGING_IDENTITY_NOT_FOUND`
+* `NOT_ALLOWED`
+
+4.5 Delete an Identity (authenticated)
+--------------------------------------
+
+    /api/0/identity/delete
+
+Data:
+* `identity`: The Identity that should be deleted
+
+Returns:
+* `Result` Object
+
+Possible Errors:
+* `IDENTITY_NOT_FOUND`
+* `NOT_ALLOWED`
+
+4.6 Get Identity information
+----------------------------
+
+    /api/0/identity/info
+
+Method: GET
+
+Data:
+* `identity`: Handle of the identity that should be queried
+
+Returns:
+* Identity Object or Error Object.
+
+Possible Errors:
+* `IDENTITY_NOT_FOUND`
+
+
+4.7 Change an Identity's Profile (authenticated)
+------------------------------------------------
+
+    /api/0/identity/change
+
+Method: POST
+
+Change an Identity's profile.
+
+Data:
+* `name`: name of the identity
+* `tagline`: tagline of the identity
+* `bio`: bio for the identity
+* `avatar`: new avatar for the identity
+
+Returns:
+* Result object
+
+Possible Errors:
+* `IDENTITY_NOT_FOUND`
+* `NOT_ALLOWED`
+
+
+4.8 Add a friend to an identity (Authenticated)
+-----------------------------------------------
+
+    /api/0/identity/friends/add
+
+Method: POST
+
+Add a friend to an identity
+
+Data:
+* `user_identity`: Identity handle to add the friend to
+* `friend_identity`: Identity handle of the friend to add
+
+Returns:
+* Result object
+
+Possible Errors:
+* `USER_IDENTITY_NOT_FOUND`
+* `FRIEND_IDENTITY_NOT_FOUND`
+* `NOT_ALLOWED`
+
+4.9 Remove a friend from an Identity (authenticated)
+----------------------------------------------------
+
+    /api/0/identity/friends/remove
+
+Method: POST
+
+Add a friend to an identity
+
+Data:
+* `user_identity`: Identity handle to remove the friend from
+* `friend_identity`: Identity handle of the friend to remove
+
+Returns:
+* Result object
+
+Possible Errors:
+* `USER_IDENTITY_NOT_FOUND`
+* `FRIEND_IDENTITY_NOT_FOUND`
+* `NOT_ALLOWED`
+* `FRIEND_IDENTITY_NOT_IN_FRIENDS`
