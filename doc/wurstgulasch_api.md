@@ -287,7 +287,7 @@ Data:
 
 Returns:
 * Array of post objects or
-* Error object
+* an empty array if there are no posts at all.
 
 3.4 Get Complete Discussion
 ---------------------------
