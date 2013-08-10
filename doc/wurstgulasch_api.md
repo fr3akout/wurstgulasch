@@ -158,14 +158,16 @@ This might look something like:
         'input_fields':
             [
                 {
-                    'name': 'title',
-                    'desc': 'Post Title',
-                    'type': 'textfield'
+                    'name':     'title',
+                    'desc':     'Post Title',
+                    'type':     'textfield',
+                    'required': false
                 },
                 {
-                    'name': 'text',
-                    'desc': 'Post Content',
-                    'type': 'textarea'
+                    'name':     'text',
+                    'desc':     'Post Content',
+                    'type':     'textarea'
+                    'required': true
                 }
             ]
     },
@@ -176,9 +178,10 @@ This might look something like:
         'input_fields':
             [
                 {
-                    'name': 'image',
-                    'desc': 'Post Title',
-                    'type': 'file'
+                    'name':     'image',
+                    'desc':     'Image',
+                    'type':     'file',
+                    'required': true
                 },
                 {
                     'name': 'description',
