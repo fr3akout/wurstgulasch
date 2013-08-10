@@ -325,6 +325,7 @@ Returns:
 * Result object
 
 Possible Errors:
+* `IDENTITY_NOT_FOUND`
 * `IDENTITY_NOT_ALLOWED`
 * `CONTENT_TYPE_MISSING`
 * `CONTENT_ERROR`
