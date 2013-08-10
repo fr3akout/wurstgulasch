@@ -1,6 +1,9 @@
 Wurstgulasch JSON API Specs
 ===========================
 
+This document intends to give a quick overview on the Wurstgulasch decentral
+and (somewhat) social Microblogging API.
+
 0. Definitions
 --------------
  
