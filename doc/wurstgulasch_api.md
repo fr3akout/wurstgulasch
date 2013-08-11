@@ -551,7 +551,28 @@ Possible Errors:
 * `NOT_ALLOWED`
 
 
-4.8 Follow someone with an identity (Authenticated)
+4.8 Get Notifications for Identity (Authenticated)
+--------------------------------------------------
+
+    /api/0/identity/notifications
+
+Method: GET
+
+Get Notification Objects for an Identity.
+
+Data:
+* `identity`: Handle of the identity for which the notifications should be
+  fetched
+
+Returns:
+* Array of Notification object or
+* Result object.
+
+Possible Errors:
+* `IDENTITY_NOT_FOUND`
+* `IDENTITY_NOT_ALLOWED`
+
+4.9 Follow someone with an identity (Authenticated)
 ---------------------------------------------------
 
     /api/0/identity/friends/add
@@ -573,7 +594,7 @@ Possible Errors:
 * `FRIEND_IDENTITY_NOT_FOUND`
 * `NOT_ALLOWED`
 
-4.9 Unfollow someone when an identity (authenticated)
+4.10 Unfollow someone when an identity (authenticated)
 -----------------------------------------------------
 
     /api/0/identity/friends/remove
