@@ -163,7 +163,7 @@ Gets Information about the queried instance. Responses look like:
 2.2 Supported Content Plugins
 -----------------------------
 
-    /api/0/instance/supported_content_plugins
+    /api/0/instance/content-plugins
 
 Method: GET
 
