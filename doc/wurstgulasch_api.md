@@ -4,6 +4,38 @@ Wurstgulasch JSON API Specs
 This document intends to give a quick overview on the Wurstgulasch decentral
 and (somewhat) social Microblogging API.
 
+Here's a quick overview over the API endpoints:
+
+`/api/0/`
+* `user/`
+  * `login`
+  * `logout`
+  * `create`
+* `instance/`
+  * `info`
+  * `content-plugins`
+* `posts/`
+  * `identity/`
+    * `posts`
+    * `timeline`
+  * `all`
+  * `create`
+  * `repost`
+  * `reply`
+* `identity/`
+  * `create`
+  * `share`
+  * `revoke`
+  * `delete`
+  * `info`
+  * `change`
+  * `notifications`
+  * `friends/`
+    * `follow`
+    * `unfollow`
+* `machines/`
+  * `notify`
+
 0. Definitions
 --------------
  
