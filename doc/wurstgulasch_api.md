@@ -334,7 +334,30 @@ Returns:
 Possible Errors:
 * `POST_NOT_FOUND`
 
-3.5 Create Post (authenticated)
+3.5 Reply to post (authenticated)
+---------------------------------
+
+    /api/0/posts/reply
+
+Method: POST
+
+Data:
+* `identity`: ``identity_id`` of the identity that should create the reply
+* `content_tupe`: string identifying the type of content
+* `original_post`: `id` field of the referenced post.
+* all the fields that the `content_type` plugin requires.
+
+Returns:
+* Result object
+
+Possible Errors:
+* `POST_NOT_FOUND`
+* `IDENTITY_NOT_FOUND`
+* `IDENTITY_NOT_ALLOWED`
+* `CONTENT_TYPE_MISSING`
+* `CONTENT_ERROR`
+
+3.6 Create Post (authenticated)
 -------------------------------
 
     /api/0/posts/create
@@ -355,7 +378,7 @@ Possible Errors:
 * `CONTENT_TYPE_MISSING`
 * `CONTENT_ERROR`
 
-3.5 Repost (authenticated)
+3.7 Repost (authenticated)
 --------------------------
 
     /api/posts/repost
