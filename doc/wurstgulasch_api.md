@@ -51,6 +51,28 @@ For Example:
 }
 ```
 
+0.4 Notifications
+-----------------
+
+Notification Objects look like this:
+
+```
+{
+    'type':         'follow',
+    'subject':      'alice@wurstgulasch.sft.mx',
+    'object':       'bob@wurstgulasch.example.com',
+    'data':         null
+}
+```
+`type` can be one of:
+* `follow`: `subject` now follows `object`. `data` is ignored.
+* `unfollow`: `subject` does not follow `object` any more. `data` is ignored.
+* `post`: `subject` has posted or reposted something. `object` is ignored,
+  `data` contains the post object.
+* `mention`: `subject` has mentioned `object` in the post delivered in `data`.
+* `identity_deleted`: `subject` has been deleted. `object` and `data` are
+  ignored.
+
 1. Basic User Interaction
 -------------------------
 
@@ -549,3 +571,33 @@ Possible Errors:
 * `FRIEND_IDENTITY_NOT_FOUND`
 * `NOT_ALLOWED`
 * `FRIEND_IDENTITY_NOT_IN_FRIENDS`
+
+
+5. Server-to-Server Communication
+---------------------------------
+
+Server-to-Server communication is largely done by `POST`ing notification
+objects to each other.
+
+**Security Warning**: It is strongly advised to carefully monitor and/or limit
+the rate of server-to-server communication. If you're an API Provider operator
+you might run into spam problems.
+
+It's probably a good idea to pool connections to these endpoints.
+
+5.1 Notify the server
+---------------------
+
+    /api/0/notify
+
+Method: POST
+
+Notify the Wurstgulasch instance about things that happened. When delivering
+this endpoint, make sure to keep a backlog of failed transactions and repeat
+them in a reasonable interval.
+
+Data:
+* `messages`: Array of `Notification` objects
+
+Returns:
+* Result object
