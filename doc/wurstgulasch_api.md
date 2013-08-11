@@ -529,8 +529,8 @@ Possible Errors:
 * `NOT_ALLOWED`
 
 
-4.8 Add a friend to an identity (Authenticated)
------------------------------------------------
+4.8 Follow someone with an identity (Authenticated)
+---------------------------------------------------
 
     /api/0/identity/friends/add
 
@@ -540,7 +540,8 @@ Add a friend to an identity
 
 Data:
 * `user_identity`: Identity handle to add the friend to
-* `friend_identity`: Identity handle of the friend to add
+* `friend_identity`: Identity handle of the identity to
+  follow
 
 Returns:
 * Result object
@@ -550,8 +551,8 @@ Possible Errors:
 * `FRIEND_IDENTITY_NOT_FOUND`
 * `NOT_ALLOWED`
 
-4.9 Remove a friend from an Identity (authenticated)
-----------------------------------------------------
+4.9 Unfollow someone when an identity (authenticated)
+-----------------------------------------------------
 
     /api/0/identity/friends/remove
 
@@ -560,8 +561,8 @@ Method: POST
 Add a friend to an identity
 
 Data:
-* `user_identity`: Identity handle to remove the friend from
-* `friend_identity`: Identity handle of the friend to remove
+* `user_identity`: Identity handle that should unfollow
+* `friend_identity`: Identity handle of the friend unfollow
 
 Returns:
 * Result object
