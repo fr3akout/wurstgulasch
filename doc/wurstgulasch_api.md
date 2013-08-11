@@ -478,7 +478,6 @@ Returns:
 
 Possible Errors:
 * `SHARED_IDENTITY_NOT_FOUND`
-* `MANAGING_IDENTITY_NOT_FOUND`
 * `NOT_ALLOWED`
 
 4.4 Revoke access to an Identity (authenticated)
